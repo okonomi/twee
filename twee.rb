@@ -1,33 +1,48 @@
 require 'oauth'
 require 'uri'
 require 'json'
+require 'yaml/store'
 
-consumer_key = ENV['TWEE_CONSUMER_KEY']
-consumer_secret = ENV['TWEE_CONSUMER_SECRET']
+config_path = File.expand_path('./tw.yml')
+config = if File.exists?(config_path)
+           YAML.load_file(config_path)
+         else
+          {
+            'consumer_key' => ENV['TWEE_CONSUMER_KEY'],
+            'consumer_secret' => ENV['TWEE_CONSUMER_SECRET'],
+          }
+        end
 
 oauth = OAuth::Consumer.new(
-  consumer_key,
-  consumer_secret,
+  config['consumer_key'],
+  config['consumer_secret'],
   site: 'https://twitter.com',
   # debug_output: true,
 )
 
-if ENV['TWEE_ACCESS_TOKEN'] && ENV['TWEE_ACCESS_TOKEN_SECRET']
-  hash = { oauth_token: ENV['TWEE_ACCESS_TOKEN'], oauth_token_secret: ENV['TWEE_ACCESS_TOKEN_SECRET']}
+if config['access_token'] && config['access_token_secret']
+  hash = { oauth_token: config['access_token'], oauth_token_secret: config['access_token_secret'] }
   access_token = OAuth::AccessToken.from_hash(oauth, hash)
 else
   request_token = oauth.get_request_token
-  puts request_token.authorize_url
 
   puts  "Please access this URL      : #{request_token.authorize_url}"
   print "Please enter the PIN code   : "
-  pin_code = gets.to_i
+  pin_code = STDIN.gets.to_i
 
   access_token = request_token.get_access_token(
     oauth_verifier: pin_code
   )
-  puts "Access Token        : #{access_token.token}"
-  puts "Access Token Secret : #{access_token.secret}"
+  config['access_token'] = access_token.token
+  config['access_token_secret'] = access_token.secret
+
+  store = YAML::Store.new config_path
+  store.transaction do
+    store['consumer_key'] = config['consumer_key']
+    store['consumer_secret'] = config['consumer_secret']
+    store['access_token'] = config['access_token']
+    store['access_token_secret'] = config['access_token_secret']
+  end
 end
 
 message = ARGV[0]
