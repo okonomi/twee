@@ -30,7 +30,7 @@ else
   puts "Access Token Secret : #{access_token.secret}"
 end
 
-message = "test3"
+message = ARGV[0]
 
 res = access_token.post('https://api.twitter.com/1.1/statuses/update.json?status=' + URI.encode_www_form_component(message))
 puts res.code
