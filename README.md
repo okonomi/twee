@@ -1,5 +1,7 @@
 # Twee
 
+[![Gem Version](https://badge.fury.io/rb/twee.svg)](https://badge.fury.io/rb/twee)
+
 Simple tweet tool.
 
 ## Installation
