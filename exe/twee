@@ -11,8 +11,8 @@ config = if File.exist?(config_path)
            YAML.load_file(config_path)
          else
            {
-             "consumer_key" => ENV["TWEE_CONSUMER_KEY"],
-             "consumer_secret" => ENV["TWEE_CONSUMER_SECRET"]
+             "consumer_key" => "hNh4xlW32H9X6Z7GEoStyUJiL",
+             "consumer_secret" => "OAwfI08IJ8s94Xpczw4EzYrrrwd6xvOUC8lYbpuwgPlgQYwAay",
            }
          end
 
