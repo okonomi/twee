@@ -6,7 +6,7 @@ require "uri"
 require "json"
 require "yaml/store"
 
-config_path = File.expand_path("~/twee.yml")
+config_path = File.expand_path("~/.twee.yml")
 config = if File.exist?(config_path)
            YAML.load_file(config_path)
          else
