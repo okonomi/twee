@@ -12,7 +12,7 @@ config = if File.exist?(config_path)
          else
            {
              "consumer_key" => "hNh4xlW32H9X6Z7GEoStyUJiL",
-             "consumer_secret" => "OAwfI08IJ8s94Xpczw4EzYrrrwd6xvOUC8lYbpuwgPlgQYwAay",
+             "consumer_secret" => "OAwfI08IJ8s94Xpczw4EzYrrrwd6xvOUC8lYbpuwgPlgQYwAay"
            }
          end
 
